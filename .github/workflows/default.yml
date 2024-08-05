@@ -1,4 +1,5 @@
-name: "Stoney kernel"
+# default.yml
+name: "Vanilla Stoney kernel"
 on:
   push:
     branches: [ "main" ]

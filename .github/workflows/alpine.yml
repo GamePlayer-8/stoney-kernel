@@ -1,0 +1,34 @@
+# alpine.yml
+name: "Alpine Stoney kernel"
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container:
+      image: alpine:latest
+      options: --cpus 8
+      privileged: true
+    steps:
+      - name: Maximize build space
+        uses: easimon/maximize-build-space@master
+        with:
+          root-reserve-mb: 5120
+          swap-size-mb: 1024
+          remove-dotnet: 'true'
+      - name: Check out
+        uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          apk add --no-cache git base-build ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison binutils linux-firmware
+      - name: Build kernel
+        run: bash build.sh alpine
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: stoney-kernel
+          path: |
+            build/kernel.tar.gz
