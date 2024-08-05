@@ -150,9 +150,8 @@ function package_kernel {
         cp packaging/alpine/src/community/linux-chrultrabook-stoney/APKBUILD.template ${package_dir}/APKBUILD
         sed -i "s/KERNELVER/${kernel_version}/g" ${package_dir}/APKBUILD
         $elevate $container run --rm \
-            --platform linux/x86_64 \
             -v ${packaging_dir}/alpine:/stoney:z \
-            -it alpine \
+            -i alpine:latest \
             /stoney/steps.sh $USER
         $elevate chown -R $USER:$USER packaging/
 	ls -lh packaging/
