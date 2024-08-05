@@ -152,7 +152,7 @@ function package_kernel {
         $elevate $container run --rm \
             -v ${packaging_dir}/alpine:/stoney:z \
             -i alpine:latest \
-            /stoney/steps.sh $USER
+            /stoney/package.sh $USER
         $elevate chown -R $USER:$USER packaging/
 	ls -lh packaging/
     ;;
