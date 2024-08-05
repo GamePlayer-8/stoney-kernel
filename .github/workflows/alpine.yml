@@ -11,7 +11,7 @@ jobs:
     steps:
       - name: Prepare
         run: |
-          apt update; apt install -y docker
+          sudo apt update; sudo apt install -y docker
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
