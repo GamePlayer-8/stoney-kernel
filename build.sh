@@ -143,6 +143,8 @@ function package_kernel {
 
     case $distro in
     alpine)
+	ls "${pwd}"
+	ls "${packaging_dir}"
         package_dir=${packaging_dir}/alpine/pkg/community/linux-chrultrabook-stoney/
         cp ${build_dir}/kernel.tar.gz ${package_dir}
         cp ${package_dir}/APKBUILD.template ${package_dir}/APKBUILD
