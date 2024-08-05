@@ -12,6 +12,9 @@ jobs:
       image: alpine:latest
       options: --privileged
     steps:
+      - name: Prepare
+        run: |
+          apk add --no-cache bash git base-build ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison binutils linux-firmware
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
@@ -20,9 +23,6 @@ jobs:
           remove-dotnet: 'true'
       - name: Check out
         uses: actions/checkout@v3
-      - name: Install dependencies
-        run: |
-          apk add --no-cache git base-build ncurses-dev xz-utils libssl-dev bc flex libelf-dev bison binutils linux-firmware
       - name: Build kernel
         run: bash build.sh alpine
       - name: Upload build artifacts
