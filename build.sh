@@ -181,8 +181,8 @@ function package_kernel {
         sed -i "s/KERNELVER/${kernel_version}/g" ${packaging_dir}/debian/bin/DEBIAN/control
 	dpkg-deb --build ${packaging_dir}/debian/bin
 	mkdir packaging || true
-	mkdir builds
-	mv ${packaging_dir}/debian/bin.deb builds/kernel.deb
+	mkdir ${packaging_dir}/../builds
+	mv ${packaging_dir}/debian/bin.deb ${packaging_dir}/../builds/kernel.deb
     ;;
     esac
 }
