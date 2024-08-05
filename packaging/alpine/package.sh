@@ -16,9 +16,9 @@ cp -r /stoney/pkg /home/$BUILDUSER/packages 2>/dev/null || :
 chown -R $BUILDUSER:$BUILDUSER /home/$BUILDUSER/.abuild
 chown -R $BUILDUSER:$BUILDUSER /home/$BUILDUSER/packages
 cp /home/$BUILDUSER/.abuild/*.pub /etc/apk/keys
-su $BUILDUSER -c "cd /stoney/src/community/linux-chrultrabook-stoney
+su $BUILDUSER -c "cd /stoney/pkg/community/linux-chrultrabook-stoney
 abuild checksum
-abuild -rK
-rm -rf /stoney/pkg 2>/dev/null || :"
-cp -r /home/$BUILDUSER/packages /stoney/pkg
-cp -r /home/$BUILDUSER/.abuild /stoney/keys
+abuild -rK"
+find /stoney -name '*.apk' | xargs -I '{}' mv "{}" /builds/
+cp -r /home/$BUILDUSER/packages /builds/pkg
+cp -r /home/$BUILDUSER/.abuild /builds/keys

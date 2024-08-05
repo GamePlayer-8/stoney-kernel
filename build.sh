@@ -149,12 +149,12 @@ function package_kernel {
 	cp ${build_dir}/kernel.tar.gz ${package_dir}
         cp packaging/alpine/src/community/linux-chrultrabook-stoney/APKBUILD.template ${package_dir}/APKBUILD
         sed -i "s/KERNELVER/${kernel_version}/g" ${package_dir}/APKBUILD
-        $elevate $container run --rm \
+        mkdir ${packaging_dir}/../builds
+	sudo $container run --rm \
             -v ${packaging_dir}/alpine:/stoney:z \
+            -v ${packaging_dir}/../builds:/builds \
             -i alpine:latest \
             /stoney/package.sh $USER
-        $elevate chown -R $USER:$USER packaging/
-	ls -lh packaging/
     ;;
     debian)
 	package_dir=${packaging_dir}/debian/pkg/chrultrabook/linux-chrultrabook-stoney/
@@ -181,6 +181,7 @@ function package_kernel {
 	dpkg-deb --build ${packaging_dir}/debian/bin
 	mkdir packaging || true
 	mkdir builds
+	mv ${packaging_dir}/debian/bin.deb builds/kernel.deb
     ;;
     esac
 }

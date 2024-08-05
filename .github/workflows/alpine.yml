@@ -27,4 +27,4 @@ jobs:
         with:
           name: alpine-stoney-kernel
           path: |
-            packaging
+            builds
