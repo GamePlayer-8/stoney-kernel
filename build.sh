@@ -153,6 +153,7 @@ function package_kernel {
             -it alpine \
             /stoney/steps.sh $USER
         $elevate chown -R $USER:$USER packaging/
+	ls -lh packaging/
     ;;
     esac
 }
