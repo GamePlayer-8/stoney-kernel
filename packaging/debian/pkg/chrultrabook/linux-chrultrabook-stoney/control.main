@@ -1,0 +1,7 @@
+Package: linux-chrultrabook-stoney
+Version: KERNELVER
+Architecture: x86_64
+Maintainer: Chimmie Firefly <gameplayer2019pl@tutamail.com>
+Description: Debian Chrultrabook Stoney
+ Linux Kernel for Stoneyridge devices.
+Depends: linux-firmware

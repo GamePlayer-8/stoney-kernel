@@ -12,7 +12,7 @@ kernel_version="6.6.43"
 tarball_url="https://cdn.kernel.org/pub/linux/kernel/v${kernel_version:0:1}.x/linux-${kernel_version}.tar.xz"
 tarball_name="$(echo $tarball_url | cut -f 8 -d '/')"
 
-distros=('alpine' 'none')
+distros=('debian' 'alpine' 'none')
 
 function build_kernel {
 	  arch=x86_64
@@ -154,6 +154,33 @@ function package_kernel {
             /stoney/steps.sh $USER
         $elevate chown -R $USER:$USER packaging/
 	ls -lh packaging/
+    ;;
+    debian)
+	package_dir=${packaging_dir}/debian/pkg/chrultrabook/linux-chrultrabook-stoney/
+	mkdir -p ${packaging_dir}/debian/bin/DEBIAN
+	cp ${build_dir}/kernel.tar.gz ${packaging_dir}/debian/bin/DEBIAN/
+	cp ${package_dir}/control.main ${packaging_dir}/debian/bin/DEBIAN/control
+	CODE_PWD="$(pwd)"
+	cd ${packaging_dir}/debian/bin/DEBIAN
+	tar -xvf kernel.tar.gz
+	rm -f kernel.tar.gz
+	mkdir -p boot usr/src lib usr/share/kernel/chrultrabook-stoney
+	mv vmlinuz* boot/vmlinuz-chrultrabook-stoney
+	mv config boot/config-chrultrabook-stoney
+	mv System.map boot/System.map-chrultrabook-stoney
+	mv kernel.release usr/share/kernel/chrultrabook-stoney
+	mv modules lib/
+	mv headers usr/src/linux-headers-"${kernel_version}"
+	rm -f System.map-* config-*
+	cd "$CODE_PWD"
+	unset CODE_PWD
+	chmod 0755 ${packaging_dir}/debian/bin/DEBIAN/*
+	chmod 0644 ${packaging_dir}/debian/bin/DEBIAN/control
+        sed -i "s/KERNELVER/${kernel_version}/g" ${packaging_dir}/debian/bin/DEBIAN/control
+	dpkg-deb --build ${packaging_dir}/debian/bin
+	mkdir packaging || true
+	mkdir builds
+	find ${packaging_dir} -name '*.deb' | xargs -I '{}' mv "{}" builds/
     ;;
     esac
 }
