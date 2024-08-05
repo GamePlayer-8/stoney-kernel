@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: alpine:latest
-      options: --cpus 8 --privileged
+      options: --privileged
     steps:
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
