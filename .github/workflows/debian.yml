@@ -27,4 +27,4 @@ jobs:
         with:
           name: debian-stoney-kernel
           path: |
-            builds
+            packaging/debian

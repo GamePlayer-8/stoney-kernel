@@ -143,11 +143,11 @@ function package_kernel {
 
     case $distro in
     alpine)
-	ls "${pwd}"
-	ls "${packaging_dir}"
+	cd ../..
         package_dir=${packaging_dir}/alpine/pkg/community/linux-chrultrabook-stoney/
-        cp ${build_dir}/kernel.tar.gz ${package_dir}
-        cp ${package_dir}/APKBUILD.template ${package_dir}/APKBUILD
+        mkdir -p "${package_dir}"
+	cp ${build_dir}/kernel.tar.gz ${package_dir}
+        cp packaging/alpine/src/community/linux-chrultrabook-stoney/APKBUILD.template ${package_dir}/APKBUILD
         sed -i "s/KERNELVER/${kernel_version}/g" ${package_dir}/APKBUILD
         $elevate $container run --rm \
             --platform linux/x86_64 \
@@ -182,7 +182,6 @@ function package_kernel {
 	dpkg-deb --build ${packaging_dir}/debian/bin
 	mkdir packaging || true
 	mkdir builds
-	find ${packaging_dir} -name '*.deb' | xargs -I '{}' mv "{}" builds/
     ;;
     esac
 }
