@@ -3,7 +3,7 @@
 BUILDUSER=$1
 
 apk update
-apk add alpine-sdk
+apk add alpine-sdk sudo
 adduser $BUILDUSER -D
 adduser $BUILDUSER abuild
 if [ -d /stoney/keys ]; then
