@@ -171,7 +171,7 @@ function package_kernel {
 	mv config boot/config-chrultrabook-stoney
 	mv System.map boot/System.map-chrultrabook-stoney
 	mv kernel.release usr/share/kernel/chrultrabook-stoney
-	mv modules lib/
+	mv modules/lib/modules lib/
 	mv headers usr/src/linux-headers-"${kernel_version}"-chrultrabook-stoney
 	rm -f System.map-* config-*
 	cd "$CODE_PWD"
