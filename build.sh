@@ -160,10 +160,10 @@ function package_kernel {
     debian)
 	package_dir=${packaging_dir}/debian/pkg/chrultrabook/linux-chrultrabook-stoney/
 	mkdir -p ${packaging_dir}/debian/bin/DEBIAN
-	cp ${build_dir}/kernel.tar.gz ${packaging_dir}/debian/bin/DEBIAN/
+	cp ${build_dir}/kernel.tar.gz ${packaging_dir}/debian/bin/
 	cp ${package_dir}/control.main ${packaging_dir}/debian/bin/DEBIAN/control
 	CODE_PWD="$(pwd)"
-	cd ${packaging_dir}/debian/bin/DEBIAN
+	cd ${packaging_dir}/debian/bin
 	tar -xvf kernel.tar.gz
 	rm -f kernel.tar.gz
 	mkdir -p boot usr/src lib usr/share/kernel/chrultrabook-stoney
@@ -176,6 +176,7 @@ function package_kernel {
 	rm -f System.map-* config-*
 	cd "$CODE_PWD"
 	unset CODE_PWD
+        chmod 0755 ${packaging_dir}/debian/bin/*
 	chmod 0755 ${packaging_dir}/debian/bin/DEBIAN/*
 	chmod 0644 ${packaging_dir}/debian/bin/DEBIAN/control
         sed -i "s/KERNELVER/${kernel_version}/g" ${packaging_dir}/debian/bin/DEBIAN/control
