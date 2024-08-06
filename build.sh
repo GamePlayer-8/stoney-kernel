@@ -155,7 +155,7 @@ function package_kernel {
             -v ${packaging_dir}/../builds:/builds \
             -i alpine:latest \
             /stoney/package.sh $USER
-        sudo chown -R $USER:$USER ${packaging_dir}/..
+        sudo chown -R $USER:$USER ${packaging_dir}/../..
     ;;
     debian)
 	package_dir=${packaging_dir}/debian/pkg/chrultrabook/linux-chrultrabook-stoney/
