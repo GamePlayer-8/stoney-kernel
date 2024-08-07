@@ -179,11 +179,13 @@ function package_kernel {
         chmod 0755 ${packaging_dir}/debian/bin/*
 	chmod 0755 ${packaging_dir}/debian/bin/DEBIAN/*
 	chmod 0644 ${packaging_dir}/debian/bin/DEBIAN/control
+	find ${packaging_dir}/debian/bin/* -type d | xargs -I '{}' sudo chmod 0755 "{}"
         sed -i "s/KERNELVER/${kernel_version}/g" ${packaging_dir}/debian/bin/DEBIAN/control
-	dpkg-deb --build ${packaging_dir}/debian/bin
-	mkdir packaging || true
+	sudo chown -R root:root ${packaging_dir}/debian/bin/*
+	sudo dpkg-deb --build ${packaging_dir}/debian/bin
 	mkdir ${packaging_dir}/../builds
-	mv ${packaging_dir}/debian/bin.deb ${packaging_dir}/../builds/kernel.deb
+	sudo mv ${packaging_dir}/debian/bin.deb ${packaging_dir}/../builds/kernel.deb
+	sudo chown -R $USER:$USER ${packaging_dir}/../builds
     ;;
     esac
 }
