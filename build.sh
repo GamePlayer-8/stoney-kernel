@@ -162,14 +162,19 @@ function package_kernel {
 	mkdir -p ${packaging_dir}/debian/bin/DEBIAN
 	cp ${build_dir}/kernel.tar.gz ${packaging_dir}/debian/bin/
 	cp ${package_dir}/control.main ${packaging_dir}/debian/bin/DEBIAN/control
+	cp ${package_dir}/postinst ${packaging_dir}/debian/bin/DEBIAN/postinst
+	cp ${package_dir}/preinst ${packaging_dir}/debian/bin/DEBIAN/preinst
+	cp ${package_dir}/triggers ${packaging_dir}/debian/bin/DEBIAN/triggers
+	cp ${package_dir}/postrm ${packaging_dir}/debian/bin/DEBIAN/postrm
+	cp ${package_dir}/prerm ${packaging_dir}/debian/bin/DEBIAN/prerm
 	CODE_PWD="$(pwd)"
 	cd ${packaging_dir}/debian/bin
 	tar -xvf kernel.tar.gz
 	rm -f kernel.tar.gz
 	mkdir -p boot usr/src lib usr/share/kernel/chrultrabook-stoney
-	mv vmlinuz* boot/vmlinuz-chrultrabook-stoney
-	mv config boot/config-chrultrabook-stoney
-	mv System.map boot/System.map-chrultrabook-stoney
+	mv vmlinuz* boot/vmlinuz-"${kernel_version}"-chrultrabook-stoney
+	mv config boot/config-"${kernel_version}"-chrultrabook-stoney
+	mv System.map boot/System.map-"${kernel_version}"-chrultrabook-stoney
 	mv kernel.release usr/share/kernel/chrultrabook-stoney
 	mv modules/lib/modules lib/
 	mv headers usr/src/linux-headers-"${kernel_version}"-chrultrabook-stoney
@@ -179,8 +184,11 @@ function package_kernel {
         chmod 0755 ${packaging_dir}/debian/bin/*
 	chmod 0755 ${packaging_dir}/debian/bin/DEBIAN/*
 	chmod 0644 ${packaging_dir}/debian/bin/DEBIAN/control
+	chmod 0644 ${packaging_dir}/debian/bin/DEBIAN/triggers
 	find ${packaging_dir}/debian/bin/* -type d | xargs -I '{}' sudo chmod 0755 "{}"
         sed -i "s/KERNELVER/${kernel_version}/g" ${packaging_dir}/debian/bin/DEBIAN/control
+        sed -i "s/KERNELVER/${kernel_version}/g" ${packaging_dir}/debian/bin/DEBIAN/preinst
+        sed -i "s/KERNELVER/${kernel_version}/g" ${packaging_dir}/debian/bin/DEBIAN/postinst
 	sudo chown -R root:root ${packaging_dir}/debian/bin/*
 	sudo dpkg-deb --build ${packaging_dir}/debian/bin
 	mkdir ${packaging_dir}/../builds

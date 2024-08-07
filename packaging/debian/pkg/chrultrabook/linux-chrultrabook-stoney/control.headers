@@ -1,7 +1,0 @@
-Package: linux-chrultrabook-stoney-headers
-Version: KERNELVER
-Architecture: amd64
-Maintainer: Chimmie Firefly <gameplayer2019pl@tutamail.com>
-Description: Debian Chrultrabook Stoney Headers
- Headers for Linux Kernel for Stoneyridge devices.
-Depends: linux-firmware linux-chrultrabook-stoney
