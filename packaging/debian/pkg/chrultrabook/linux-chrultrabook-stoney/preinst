@@ -4,7 +4,7 @@ set -e
 version=KERNELVER-chrultrabook-stoney
 image_path=/boot/vmlinuz-$version
 
-ln -s usr/src/linux-headers-"${version}"-chrultrabook-stoney lib/modules/"${version}"-chrultrabook-stoney/build || true
+ln -s /usr/src/linux-headers-"${version}"-chrultrabook-stoney /lib/modules/"${version}"-chrultrabook-stoney/build >/dev/null 2>&1 3>&1 || true
 
 if [ "$1" = abort-upgrade ]; then
     exit 0
