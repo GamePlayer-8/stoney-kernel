@@ -17,14 +17,15 @@ cp /home/$BUILDUSER/.abuild/*.pub /etc/apk/keys
 chown -R $BUILDUSER:$BUILDUSER /home/$BUILDUSER
 chown -R $BUILDUSER:$BUILDUSER /stoney
 chown -R $BUILDUSER:$BUILDUSER /builds
-su $BUILDUSER -c "cd /tmp
-tar --same-owner -xf /stoney/pkg/community/linux-chrultrabook-stoney/kernel.tar.gz || true"
-rm -f /stoney/pkg/community/linux-chrultrabook-stoney/kernel.tar.gz
-su $BUILDUSER -c "cd /tmp
-tar -Czf --no-overwrite-dir /stoney/pkg/community/linux-chrultrabook-stoney/kernel.tar.gz *"
-rm -rf /tmp/*
+#su $BUILDUSER -c "cd /tmp
+#tar --same-owner -xf /stoney/pkg/community/linux-chrultrabook-stoney/kernel.tar.gz || true"
+#rm -f /stoney/pkg/community/linux-chrultrabook-stoney/kernel.tar.gz
+#su $BUILDUSER -c "cd /tmp
+#tar -Czf --no-overwrite-dir /stoney/pkg/community/linux-chrultrabook-stoney/kernel.tar.gz *"
+#rm -rf /tmp/*
 su $BUILDUSER -c "cd /stoney/pkg/community/linux-chrultrabook-stoney
-abuild checksum
-abuild -rK"
+abuild checksum"
+su root -c "cd /stoney/pkg/community/linux-chrultrabook-stoney
+abuild -rKFc"
 cp -r /home/$BUILDUSER/packages/community/x86_64 /builds/pkg
 cp -r /home/$BUILDUSER/.abuild /builds/keys
