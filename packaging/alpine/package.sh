@@ -21,7 +21,7 @@ su $BUILDUSER -c "cd /tmp
 tar --same-owner -xf /stoney/pkg/community/linux-chrultrabook-stoney/kernel.tar.gz || true"
 rm -f /stoney/pkg/community/linux-chrultrabook-stoney/kernel.tar.gz
 su $BUILDUSER -c "cd /tmp
-tar -Czf /stoney/pkg/community/linux-chrultrabook-stoney/kernel.tar.gz *"
+tar -Czf --no-overwrite-dir /stoney/pkg/community/linux-chrultrabook-stoney/kernel.tar.gz *"
 rm -rf /tmp/*
 su $BUILDUSER -c "cd /stoney/pkg/community/linux-chrultrabook-stoney
 abuild checksum
