@@ -178,7 +178,7 @@ function package_kernel {
 	mv kernel.release usr/share/kernel/chrultrabook-stoney
 	mv modules/lib/modules lib/
 	mv headers usr/src/linux-headers-"${kernel_version}"-chrultrabook-stoney
-	rm -f System.map-* config-*
+	rm -rf System.map-* config-* lib/modules/"${kernel_version}"-chrultrabook-stoney/build
 	cd "$CODE_PWD"
 	unset CODE_PWD
         chmod 0755 ${packaging_dir}/debian/bin/*
