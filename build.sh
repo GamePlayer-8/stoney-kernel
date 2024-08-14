@@ -187,9 +187,7 @@ function package_kernel {
 	chmod 0644 ${packaging_dir}/debian/bin/DEBIAN/control
 	chmod 0644 ${packaging_dir}/debian/bin/DEBIAN/triggers
 	find ${packaging_dir}/debian/bin/* -type d | xargs -I '{}' sudo chmod 0755 "{}"
-        sed -i "s/KERNELVER/${kernel_version}/g" ${packaging_dir}/debian/bin/DEBIAN/control
-        sed -i "s/KERNELVER/${kernel_version}/g" ${packaging_dir}/debian/bin/DEBIAN/preinst
-        sed -i "s/KERNELVER/${kernel_version}/g" ${packaging_dir}/debian/bin/DEBIAN/postinst
+	find ${packaging_dir}/debian/bin/DEBIAN -type f | xargs -I '{}' sed -i "s/KERNELVER/${kernel_version}/g" "{}"
 	sudo chown -R root:root ${packaging_dir}/debian/bin/*
 	sudo dpkg-deb --build ${packaging_dir}/debian/bin
 	mkdir ${packaging_dir}/../builds
