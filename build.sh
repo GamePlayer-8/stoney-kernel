@@ -179,7 +179,7 @@ function package_kernel {
 	mv modules/lib/modules lib/
 	mv headers usr/src/linux-headers-"${kernel_version}"-chrultrabook-stoney
 	rm -f System.map-* config-*
-	ln usr/src/linux-headers-"${kernel_version}"-chrultrabook-stoney lib/modules/"${kernel_version}"-chrultrabook-stoney/build
+	ln -s usr/src/linux-headers-"${kernel_version}"-chrultrabook-stoney lib/modules/"${kernel_version}"-chrultrabook-stoney/build
 	cd "$CODE_PWD"
 	unset CODE_PWD
         chmod 0755 ${packaging_dir}/debian/bin/*
