@@ -1,8 +1,10 @@
 #!/bin/sh
 set -e
 
-version=KERNELVER
+version=KERNELVER-chrultrabook-stoney
 image_path=/boot/vmlinuz-$version
+
+ln -s usr/src/linux-headers-"${version}"-chrultrabook-stoney lib/modules/"${version}"-chrultrabook-stoney/build || true
 
 if [ "$1" = abort-upgrade ]; then
     exit 0
