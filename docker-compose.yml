@@ -1,0 +1,73 @@
+name: runtime-gameplayer-8
+services:
+  vanilla:
+    build:
+      context: .
+      dockerfile: Dockerfile-vanilla
+    privileged: true
+    volumes:
+      - ".:/source"
+      - "./packages/:/dist"
+    working_dir: "/source"
+    restart: "no"
+    command: ["/bin/bash", "-c", "/source/runtime.sh vanilla /tmp"]
+    deploy:
+      resources:
+        limits:
+          cpus: "${NPROC_CPUS}"
+
+  vanilla-alpine:
+    build:
+      context: .
+      dockerfile: Dockerfile-vanilla-alpine
+    privileged: true
+    volumes:
+      - ".:/source"
+      - "./packages/:/dist"
+    working_dir: "/source"
+    restart: "no"
+    command: ["/bin/bash", "-c", "/source/runtime.sh vanilla /tmp"]
+    deploy:
+      resources:
+        limits:
+          cpus: "${NPROC_CPUS}"
+
+  debian:
+    build:
+      context: .
+      dockerfile: Dockerfile-vanilla
+    privileged: true
+    volumes:
+      - ".:/source"
+      - "./packages/:/dist"
+      - type: tmpfs
+        target: /tmp
+        tmpfs:
+          size: 16g
+    working_dir: "/source"
+    restart: "no"
+    command: ["/bin/bash", "-c", "/source/runtime.sh debian /tmp"]
+    deploy:
+      resources:
+        limits:
+          cpus: "${NPROC_CPUS}"
+
+  alpine:
+    build:
+      context: .
+      dockerfile: Dockerfile-vanilla-alpine
+    privileged: true
+    volumes:
+      - ".:/source"
+      - "./packages/:/dist"
+      - type: tmpfs
+        target: /tmp
+        tmpfs:
+          size: 16g
+    working_dir: "/source"
+    restart: "no"
+    command: ["/bin/bash", "-c", "/source/runtime.sh alpine /tmp"]
+    deploy:
+      resources:
+        limits:
+          cpus: "${NPROC_CPUS}"

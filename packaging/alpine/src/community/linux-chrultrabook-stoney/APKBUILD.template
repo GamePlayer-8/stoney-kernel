@@ -3,6 +3,7 @@ pkgname=linux-chrultrabook-stoney
 pkgver=KERNELVER
 arch=x86_64
 url="https://chrultrabook.github.io/docs/"
+maintainer="Chimmie Firefly <gameplayer2019pl@tutamail.com>"
 pkgrel=0
 pkgdesc="The Chrultrabook Stoney kernel"
 depends="initramfs-generator"
@@ -10,12 +11,14 @@ makedepends="tar gzip"
 options="!strip !check"
 license="GPL-2.0"
 source="kernel.tar.gz"
+builddir="$srcdir/.."
 
 package() {
-	install -D -m755 ${srcdir}/System.map ${pkgdir}/boot/System.map-chrultrabook-stoney
-	install -D -m755 ${srcdir}/config ${pkgdir}/boot/config-chrultrabook-stoney
-	install -D -m755 ${srcdir}/vmlinuz-${_kernelver} ${pkgdir}/boot/vmlinuz-chrultrabook-stoney
-	install -D -m644 ${srcdir}/kernel.release ${pkgdir}/usr/share/kernel/chrultrabook-stoney/kernel.release
+	cd "$builddir/src"
+	install -D -m755 System.map ${pkgdir}/boot/System.map-chrultrabook-stoney
+	install -D -m755 config ${pkgdir}/boot/config-chrultrabook-stoney
+	install -D -m755 vmlinuz ${pkgdir}/boot/vmlinuz-chrultrabook-stoney
+	install -D -m644 kernel.release ${pkgdir}/usr/share/kernel/chrultrabook-stoney/kernel.release
 	mkdir -p ${pkgdir}/lib/modules
-	cp -r ${srcdir}/modules/lib/modules/${_kernelver} ${pkgdir}/lib/modules
+	cp -r modules/lib/modules/${_kernelver} ${pkgdir}/lib/modules
 }

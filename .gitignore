@@ -1,5 +1,6 @@
 builds/
 build/
+packages/
 source/
 packaging/alpine/pkg/
 packaging/alpine/keys/

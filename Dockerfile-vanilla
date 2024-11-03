@@ -1,0 +1,19 @@
+FROM debian:12-slim AS builder
+
+USER root
+
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=UTC
+ENV DEBIAN_SYS=1
+
+RUN apt-get update; \
+    apt-get upgrade -y; \
+    apt-get install -y sed; \
+    sed -i 's/main/main non-free-firmware/g' /etc/apt/sources.list.d/debian.sources; \
+    apt-get update; \
+    apt-get install -y \
+        curl wget sudo git build-essential ncurses-dev \
+        xz-utils libssl-dev bc file flex libelf-dev \
+        bison binutils firmware-linux-free \
+        firmware-linux-nonfree bash; \
+    apt-get clean

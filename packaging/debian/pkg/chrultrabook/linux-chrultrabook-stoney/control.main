@@ -4,4 +4,4 @@ Architecture: amd64
 Maintainer: Chimmie Firefly <gameplayer2019pl@tutamail.com>
 Description: Debian Chrultrabook Stoney
  Linux Kernel for Stoneyridge devices.
-Depends: linux-firmware
+Depends: firmware-linux

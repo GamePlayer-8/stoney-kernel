@@ -1,0 +1,12 @@
+FROM alpine:3.20 AS builder
+
+USER root
+
+RUN apk add --no-cache \
+    git alpine-sdk ncurses-dev \
+    pkgconfig xz openssl-dev bc \
+    flex libelf elfutils-dev bison \
+    linux-firmware bash binutils \
+    curl wget sudo linux-headers \
+    perl py3-pip py3-sphinx texlive-full \
+    man-db man-pages file shadow
