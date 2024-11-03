@@ -8,5 +8,5 @@ RUN apk add --no-cache \
     flex libelf elfutils-dev bison \
     linux-firmware bash binutils \
     curl wget sudo linux-headers \
-    perl py3-pip py3-sphinx texlive-full \
+    perl py3-pip py3-sphinx \
     man-db man-pages file shadow
