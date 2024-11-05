@@ -9,4 +9,5 @@ RUN apk add --no-cache \
     linux-firmware bash binutils \
     curl wget sudo linux-headers \
     perl py3-pip py3-sphinx \
-    man-db man-pages file shadow
+    man-db man-pages file shadow \
+    gawk diffutils
