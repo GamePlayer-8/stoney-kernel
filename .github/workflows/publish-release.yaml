@@ -49,7 +49,39 @@ jobs:
 
       - name: Run docker compose
         run: |
-            /bin/sh build.sh run vanilla
+          for i in {1..3}; do
+            echo "Attempt $i"
+            if /bin/sh build.sh run vanilla; then
+              break
+            fi
+            sleep 10
+          done
+        continue-on-error: false
+
+      - name: Upload kernel
+        if: success()
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
+        with:
+          name: kernel
+          path: packages/kernel.tar.gz
+
+  vanilla-fallback:
+    runs-on: self-hosted
+    timeout-minutes: 345600
+    needs: [vanilla]
+    if: failure()
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          ref: ${{ inputs.target }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Run docker compose on self-hosted
+        run: /bin/sh build.sh run vanilla
 
       - name: Upload kernel
         uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
@@ -78,7 +110,39 @@ jobs:
 
       - name: Run docker compose
         run: |
-            /bin/sh build.sh run vanilla-alpine
+          for i in {1..3}; do
+            echo "Attempt $i"
+            if /bin/sh build.sh run vanilla-alpine; then
+              break
+            fi
+            sleep 10
+          done
+        continue-on-error: false
+        
+      - name: Upload kernel
+        if: success()
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
+        with:
+          name: kernel-alpine
+          path: packages/kernel-alpine.tar.gz
+
+  vanilla-alpine-fallback:
+    runs-on: self-hosted
+    timeout-minutes: 345600
+    needs: [vanilla-alpine]
+    if: failure()
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          ref: ${{ inputs.target }}
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Run docker compose on self-hosted
+        run: /bin/sh build.sh run vanilla-alpine
 
       - name: Upload kernel
         uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
@@ -88,8 +152,11 @@ jobs:
 
   debian:
     runs-on: ubuntu-latest
-    needs: [vanilla]
-
+    needs: [vanilla, vanilla-fallback]
+    if: |
+      always() && 
+      (needs.vanilla.result == 'success' && needs.vanilla-fallback.result == 'skipped') ||
+      (needs.vanilla.result == 'failure' && needs.vanilla-fallback.result == 'success')
     steps:
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
@@ -111,7 +178,47 @@ jobs:
 
       - name: Run docker compose
         run: |
-            /bin/sh build.sh run debian
+          for i in {1..3}; do
+            echo "Attempt $i"
+            if /bin/sh build.sh run debian; then
+              break
+            fi
+            sleep 10
+          done
+        continue-on-error: true
+
+      - name: Upload debian package
+        if: success()
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
+        with:
+          name: debian-deb
+          path: packages/debian/kernel-debian.deb
+
+  debian-fallback:
+    runs-on: self-hosted
+    needs: [debian]
+    if: failure()
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          ref: ${{ inputs.target }}
+
+      - name: Create directory
+        run: mkdir packages
+
+      - name: Download kernel
+        uses: actions/download-artifact@v4
+        with:
+          name: kernel
+          path: ./packages
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Run docker compose on self-hosted
+        run: /bin/sh build.sh run debian
 
       - name: Upload debian package
         uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
@@ -121,8 +228,11 @@ jobs:
 
   alpine:
     runs-on: ubuntu-latest
-    needs: [vanilla-alpine]
-
+    needs: [vanilla-alpine, vanilla-alpine-fallback]
+    if: |
+      always() && 
+      (needs.vanilla-alpine.result == 'success' && needs.vanilla-alpine-fallback.result == 'skipped') ||
+      (needs.vanilla-alpine.result == 'failure' && needs.vanilla-alpine-fallback.result == 'success')
     steps:
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
@@ -144,15 +254,64 @@ jobs:
 
       - name: Run docker compose
         run: |
-            /bin/sh build.sh run alpine
+          for i in {1..3}; do
+            echo "Attempt $i"
+            if /bin/sh build.sh run alpine; then
+              break
+            fi
+            sleep 10
+          done
+        continue-on-error: true
 
       - name: Package
+        if: success()
         run: |
             sudo apt-get update
             sudo apt-get install -y tar lzop
             cd packages/alpine
             sudo tar --lzop -cvf alpine-apk.tar.lzo keys pkg
             sudo chown -R $USER:$USER alpine-apk.tar.lzo
+
+      - name: Upload alpine package
+        if: success()
+        uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
+        with:
+          name: alpine-apk
+          path: packages/alpine/alpine-apk.tar.lzo
+
+  alpine-fallback:
+    runs-on: self-hosted
+    needs: [alpine]
+    if: failure()
+
+    steps:
+      - name: Checkout branch
+        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+        with:
+          ref: ${{ inputs.target }}
+
+      - name: Create directory
+        run: mkdir packages
+
+      - name: Download kernel
+        uses: actions/download-artifact@v4
+        with:
+          name: kernel-alpine
+          path: ./packages
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Run docker compose on self-hosted
+        run: /bin/sh build.sh run alpine
+
+      - name: Package
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y tar lzop
+          cd packages/alpine
+          sudo tar --lzop -cvf alpine-apk.tar.lzo keys pkg
+          sudo chown -R $USER:$USER alpine-apk.tar.lzo
 
       - name: Upload alpine package
         uses: actions/upload-artifact@834a144ee995460fba8ed112a2fc961b36a5ec5a # v4.3.6
@@ -162,8 +321,13 @@ jobs:
 
   publish:
     runs-on: ubuntu-latest
-    needs: [debian, alpine]
-
+    needs: [debian, debian-fallback, alpine, alpine-fallback]
+    if: |
+      always() && 
+      (needs.debian.result == 'success' && needs.debian-fallback.result == 'skipped' && needs.alpine.result == 'success' && needs.alpine-fallback.result == 'skipped') ||
+      (needs.debian.result == 'failure' && needs.debian-fallback.result == 'success' && needs.alpine.result == 'failure' && needs.alpine-fallback.result == 'success') ||
+      (needs.debian.result == 'failure' && needs.debian-fallback.result == 'success' && needs.alpine.result == 'success' && needs.alpine-fallback.result == 'skipped') ||
+      (needs.debian.result == 'success' && needs.debian-fallback.result == 'skipped' && needs.alpine.result == 'failure' && needs.alpine-fallback.result == 'success')
     steps:
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7

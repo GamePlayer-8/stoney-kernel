@@ -142,7 +142,10 @@ jobs:
   debian:
     runs-on: ubuntu-latest
     needs: [vanilla, vanilla-fallback]
-
+    if: |
+      always() && 
+      (needs.vanilla.result == 'success' && needs.vanilla-fallback.result == 'skipped') ||
+      (needs.vanilla.result == 'failure' && needs.vanilla-fallback.result == 'success')
     steps:
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
@@ -215,7 +218,10 @@ jobs:
   alpine:
     runs-on: ubuntu-latest
     needs: [vanilla-alpine, vanilla-alpine-fallback]
-
+    if: |
+      always() && 
+      (needs.vanilla-alpine.result == 'success' && needs.vanilla-alpine-fallback.result == 'skipped') ||
+      (needs.vanilla-alpine.result == 'failure' && needs.vanilla-alpine-fallback.result == 'success')
     steps:
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
@@ -305,7 +311,12 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     needs: [debian, debian-fallback, alpine, alpine-fallback]
-
+    if: |
+      always() && 
+      (needs.debian.result == 'success' && needs.debian-fallback.result == 'skipped' && needs.alpine.result == 'success' && needs.alpine-fallback.result == 'skipped') ||
+      (needs.debian.result == 'failure' && needs.debian-fallback.result == 'success' && needs.alpine.result == 'failure' && needs.alpine-fallback.result == 'success') ||
+      (needs.debian.result == 'failure' && needs.debian-fallback.result == 'success' && needs.alpine.result == 'success' && needs.alpine-fallback.result == 'skipped') ||
+      (needs.debian.result == 'success' && needs.debian-fallback.result == 'skipped' && needs.alpine.result == 'failure' && needs.alpine-fallback.result == 'success')
     steps:
       - name: Download Debian Deb
         uses: actions/download-artifact@v4
