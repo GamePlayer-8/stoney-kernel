@@ -26,6 +26,8 @@ on:
 env:
   DEBIAN_FRONTEND: 'noninteractive'
   TZ: Etc/UTC
+  tag: ${{ github.event.inputs.tag || github.ref_name || 'v1.0' }}
+  prev_tag: ${{ github.event.inputs.tag || github.ref_name || 'v1.0' }}
 
 jobs:
   vanilla:
@@ -39,10 +41,22 @@ jobs:
           swap-size-mb: 1024
           remove-dotnet: 'true'
       
+      - name: Install git
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git git-lfs
+          sudo apt-get autopurge -y
+          sudo apt-get clean
+
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ inputs.target }}
+          fetch-depth: '0'
+          fetch-tags: 'true'
+          lfs: 'true'
+          submodules: 'true'
+          set-safe-directory: 'true'
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -72,10 +86,22 @@ jobs:
     if: failure()
 
     steps:
+      - name: Install git
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git git-lfs
+          sudo apt-get autopurge -y
+          sudo apt-get clean
+
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ inputs.target }}
+          fetch-depth: '0'
+          fetch-tags: 'true'
+          lfs: 'true'
+          submodules: 'true'
+          set-safe-directory: 'true'
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -100,10 +126,22 @@ jobs:
           swap-size-mb: 1024
           remove-dotnet: 'true'
       
+      - name: Install git
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git git-lfs
+          sudo apt-get autopurge -y
+          sudo apt-get clean
+
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ inputs.target }}
+          fetch-depth: '0'
+          fetch-tags: 'true'
+          lfs: 'true'
+          submodules: 'true'
+          set-safe-directory: 'true'
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -133,10 +171,22 @@ jobs:
     if: failure()
 
     steps:
+      - name: Install git
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git git-lfs
+          sudo apt-get autopurge -y
+          sudo apt-get clean
+
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ inputs.target }}
+          fetch-depth: '0'
+          fetch-tags: 'true'
+          lfs: 'true'
+          submodules: 'true'
+          set-safe-directory: 'true'
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -158,10 +208,22 @@ jobs:
       (needs.vanilla.result == 'success' && needs.vanilla-fallback.result == 'skipped') ||
       (needs.vanilla.result == 'failure' && needs.vanilla-fallback.result == 'success')
     steps:
+      - name: Install git
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git git-lfs
+          sudo apt-get autopurge -y
+          sudo apt-get clean
+
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ inputs.target }}
+          fetch-depth: '0'
+          fetch-tags: 'true'
+          lfs: 'true'
+          submodules: 'true'
+          set-safe-directory: 'true'
 
       - name: Create directory
         run: |
@@ -200,10 +262,22 @@ jobs:
     if: always() &&
         (needs.debian.result == 'failure')
     steps:
+      - name: Install git
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git git-lfs
+          sudo apt-get autopurge -y
+          sudo apt-get clean
+
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ inputs.target }}
+          fetch-depth: '0'
+          fetch-tags: 'true'
+          lfs: 'true'
+          submodules: 'true'
+          set-safe-directory: 'true'
 
       - name: Create directory
         run: mkdir packages
@@ -234,10 +308,22 @@ jobs:
       (needs.vanilla-alpine.result == 'success' && needs.vanilla-alpine-fallback.result == 'skipped') ||
       (needs.vanilla-alpine.result == 'failure' && needs.vanilla-alpine-fallback.result == 'success')
     steps:
+      - name: Install git
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git git-lfs
+          sudo apt-get autopurge -y
+          sudo apt-get clean
+
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ inputs.target }}
+          fetch-depth: '0'
+          fetch-tags: 'true'
+          lfs: 'true'
+          submodules: 'true'
+          set-safe-directory: 'true'
 
       - name: Create directory
         run: |
@@ -285,10 +371,22 @@ jobs:
     if: always() &&
         (needs.alpine.result == 'failure')
     steps:
+      - name: Install git
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git git-lfs
+          sudo apt-get autopurge -y
+          sudo apt-get clean
+
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ inputs.target }}
+          fetch-depth: '0'
+          fetch-tags: 'true'
+          lfs: 'true'
+          submodules: 'true'
+          set-safe-directory: 'true'
 
       - name: Create directory
         run: mkdir packages
@@ -329,11 +427,22 @@ jobs:
       (needs.debian.result == 'failure' && needs.debian-fallback.result == 'success' && needs.alpine.result == 'success' && needs.alpine-fallback.result == 'skipped') ||
       (needs.debian.result == 'success' && needs.debian-fallback.result == 'skipped' && needs.alpine.result == 'failure' && needs.alpine-fallback.result == 'success')
     steps:
+      - name: Install git
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y git git-lfs
+          sudo apt-get autopurge -y
+          sudo apt-get clean
+
       - name: Checkout branch
         uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
         with:
           ref: ${{ inputs.target }}
-          fetch-depth: 0
+          fetch-depth: '0'
+          fetch-tags: 'true'
+          lfs: 'true'
+          submodules: 'true'
+          set-safe-directory: 'true'
 
       - name: Download Debian Deb
         uses: actions/download-artifact@v4
@@ -364,31 +473,31 @@ jobs:
         id: set_tag
         run: |
           if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
-            echo "::set-output name=tag::${{ github.event.inputs.tag }}"
+            echo "tag=${{ github.event.inputs.tag }}" >> $GITHUB_ENV
           else
-            echo "::set-output name=tag::$(echo "${{ github.ref }}" | sed 's/refs\/tags\///')"
+            echo "tag=$(echo "${{ github.ref }}" | sed 's/refs\/tags\///')" >> $GITHUB_ENV
           fi
 
       - name: Get previous tag
         id: prev_tag
         run: |
           # Find the previous tag, excluding the current tag
-          prev_tag=$(git describe --abbrev=0 --tags --exclude="$(git describe --abbrev=0 --tags ${{ steps.set_tag.outputs.tag }})")
-          echo "::set-output name=prev_tag::${prev_tag}"
+          prev_tag=$(git describe --abbrev=0 --tags --exclude="${{ env.tag }}")
+          echo "prev_tag=${prev_tag}" >> $GITHUB_ENV
 
       - name: Publish release
         uses: notpeelz/action-gh-create-release@v5.0.1
         with:
           target: ${{ inputs.target }}
-          tag: ${{ steps.set_tag.outputs.tag }}
+          tag: ${{ env.tag }}
           prerelease: ${{ inputs.prerelease }}
           draft: false
           strategy: replace
-          title: Release ${{ steps.set_tag.outputs.tag }}
+          title: Release ${{ env.tag }}
           body: |
               ## Changelog
 
-              Changes since the last release: [${{ steps.prev_tag.outputs.prev_tag }}...${{ steps.set_tag.outputs.tag }}](https://github.com/${{ github.repository }}/compare/${{ steps.prev_tag.outputs.prev_tag }}...${{ steps.set_tag.outputs.tag }})
+              Changes since the last release: [${{ env.prev_tag }}...${{ env.tag }}](https://github.com/${{ github.repository }}/compare/${{ env.prev_tag }}...${{ env.tag }})
 
               ---
               
