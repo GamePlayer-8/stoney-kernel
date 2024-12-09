@@ -29,7 +29,7 @@ env:
 
 jobs:
   vanilla:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Maximize build space
@@ -90,7 +90,7 @@ jobs:
           path: packages/kernel.tar.gz
 
   vanilla-alpine:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
 
     steps:
       - name: Maximize build space
@@ -151,7 +151,7 @@ jobs:
           path: packages/kernel-alpine.tar.gz
 
   debian:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [vanilla, vanilla-fallback]
     if: |
       always() && 
@@ -227,7 +227,7 @@ jobs:
           path: packages/debian/kernel-debian.deb
 
   alpine:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [vanilla-alpine, vanilla-alpine-fallback]
     if: |
       always() && 
@@ -320,7 +320,7 @@ jobs:
           path: packages/alpine/alpine-apk.tar.lzo
 
   publish:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: [debian, debian-fallback, alpine, alpine-fallback]
     if: |
       always() && 
