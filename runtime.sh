@@ -13,6 +13,7 @@ build_dir="${BUILD_RUNTIME}/build"
 patches_dir="${BUILD_RUNTIME}/patches"
 
 kernel_version="6.6.43"
+package_version="${kernel_version}.${3:-1}"
 tarball_url="https://cdn.kernel.org/pub/linux/kernel/v${kernel_version:0:1}.x/linux-${kernel_version}.tar.xz"
 tarball_name="$(echo $tarball_url | cut -f 8 -d '/')"
 arch="x86_64"
@@ -143,7 +144,7 @@ function package_kernel {
                 mkdir -p "${package_dir}"
                 cp /dist/kernel-alpine.tar.gz "${package_dir}/kernel.tar.gz"
                 cp "${build_dir}/alpine/src/community/linux-chrultrabook-stoney/APKBUILD.template" "${package_dir}/APKBUILD"
-                sed -i "s/KERNELVER/${kernel_version}/g" "${package_dir}/APKBUILD"
+                sed -i "s/KERNELVER/${package_version}/g" "${package_dir}/APKBUILD"
                 output_dir="${build_dir}"
                 BUILDUSER="abuilder"
                 adduser "$BUILDUSER" -D || true
@@ -212,7 +213,7 @@ function package_kernel {
                 chmod 0644 "${build_dir}"/debian/bin/DEBIAN/control
                 chmod 0644 "${build_dir}"/debian/bin/DEBIAN/triggers
                 find "${build_dir}"/debian/bin/* -type d | xargs -I '{}' chmod 0755 "{}"
-                find "${build_dir}"/debian/bin/DEBIAN -type f | xargs -I '{}' sed -i "s/KERNELVER/${kernel_version}/g" "{}"
+                find "${build_dir}"/debian/bin/DEBIAN -type f | xargs -I '{}' sed -i "s/KERNELVER/${package_version}/g" "{}"
                 chown -R 0:0 "${build_dir}"/debian/bin/*
                 dpkg-deb --build "${build_dir}"/debian/bin
                 mkdir /dist/debian

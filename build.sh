@@ -9,6 +9,10 @@ NPROC_CPUS="${NPROC_CPUS:-$3}"
 NPROC_CPUS="${NPROC_CPUS:-$(nproc --all)}"
 export NPROC_CPUS
 
+VERSION="${VERSION:-$4}"
+VERSION="${VERSION:-$(git describe --tags --abbrev=0 | rev | cut -f 1 -d 'v' | rev).$(git rev-list --count HEAD)}"
+export VERSION
+
 cd "$SCRIPT_PATH"
 
 distros='vanilla vanilla-alpine debian alpine'
