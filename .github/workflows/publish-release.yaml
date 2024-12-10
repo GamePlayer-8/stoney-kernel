@@ -32,6 +32,7 @@ env:
 jobs:
   vanilla:
     runs-on: ubuntu-24.04
+    timeout-minutes: 345600
 
     steps:
       - name: Maximize build space
@@ -137,6 +138,7 @@ jobs:
 
   vanilla-alpine:
     runs-on: ubuntu-24.04
+    timeout-minutes: 345600
 
     steps:
       - name: Maximize build space
