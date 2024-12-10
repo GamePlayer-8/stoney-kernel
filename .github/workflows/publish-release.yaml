@@ -37,9 +37,13 @@ jobs:
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
-          root-reserve-mb: 5120
-          swap-size-mb: 1024
+          root-reserve-mb: 32768
+          swap-size-mb: 2048
           remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
       
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
@@ -138,9 +142,13 @@ jobs:
       - name: Maximize build space
         uses: easimon/maximize-build-space@master
         with:
-          root-reserve-mb: 5120
-          swap-size-mb: 1024
+          root-reserve-mb: 32768
+          swap-size-mb: 2048
           remove-dotnet: 'true'
+          remove-android: 'true'
+          remove-haskell: 'true'
+          remove-codeql: 'true'
+          remove-docker-images: 'true'
       
       - name: Delete workflow runs
         uses: Mattraks/delete-workflow-runs@v2
