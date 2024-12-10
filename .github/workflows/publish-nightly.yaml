@@ -85,6 +85,14 @@ jobs:
     if: failure()
 
     steps:
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 7
+          keep_minimum_runs: 6
+          
       - name: Install git
         run: |
           sudo apt-get update
@@ -129,6 +137,14 @@ jobs:
           remove-codeql: 'true'
           remove-docker-images: 'true'
       
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 7
+          keep_minimum_runs: 6
+          
       - name: Install git
         run: |
           sudo apt-get update
@@ -174,6 +190,14 @@ jobs:
     if: failure()
 
     steps:
+      - name: Delete workflow runs
+        uses: Mattraks/delete-workflow-runs@v2
+        with:
+          token: ${{ github.token }}
+          repository: ${{ github.repository }}
+          retain_days: 7
+          keep_minimum_runs: 6
+          
       - name: Install git
         run: |
           sudo apt-get update
