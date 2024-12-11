@@ -144,7 +144,8 @@ function package_kernel {
                 mkdir -p "${package_dir}"
                 cp /dist/kernel-alpine.tar.gz "${package_dir}/kernel.tar.gz"
                 cp "${build_dir}/alpine/src/community/linux-chrultrabook-stoney/APKBUILD.template" "${package_dir}/APKBUILD"
-                sed -i "s/KERNELVER/$(echo "${package_version}" | sed -e 's/nightly/0/g')/g" "${package_dir}/APKBUILD"
+                sed -i "s/KERNELVER/$(echo "${kernel_version}" | sed -e 's/nightly/0/g')/g" "${package_dir}/APKBUILD"
+                sed -i "s/PACKVER/$(echo "${package_version}" | sed -e 's/nightly/0/g')/g" "${package_dir}/APKBUILD"
                 output_dir="${build_dir}"
                 BUILDUSER="abuilder"
                 adduser "$BUILDUSER" -D || true

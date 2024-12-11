@@ -1,6 +1,6 @@
 _kernelver=KERNELVER-chrultrabook-stoney
 pkgname=linux-chrultrabook-stoney
-pkgver=KERNELVER
+pkgver=PACKVER
 arch=x86_64
 url="https://chrultrabook.github.io/docs/"
 maintainer="Chimmie Firefly <gameplayer2019pl@tutamail.com>"
@@ -20,5 +20,6 @@ package() {
 	install -D -m755 vmlinuz ${pkgdir}/boot/vmlinuz-chrultrabook-stoney
 	install -D -m644 kernel.release ${pkgdir}/usr/share/kernel/chrultrabook-stoney/kernel.release
 	mkdir -p ${pkgdir}/lib/modules
+	ls modules/lib/modules
 	cp -r modules/lib/modules/${_kernelver} ${pkgdir}/lib/modules
 }
